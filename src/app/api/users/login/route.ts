@@ -25,10 +25,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // validate the password
-    const isValidPassword = await bcryptjs.compare(password, user.password);
+    console.log("user exists");
 
-    if (!isValidPassword) {
+    // validate the password
+    const validPassword = await bcryptjs.compare(password, user.password);
+
+    if (!validPassword) {
+      console.log("Invalid Password");
+
       return NextResponse.json(
         {
           error: "Invalid Password",
@@ -57,7 +61,6 @@ export async function POST(request: NextRequest) {
     response.cookies.set("token", token, { httpOnly: true });
 
     return response;
-    
   } catch (error: any) {
     return NextResponse.json(
       {
